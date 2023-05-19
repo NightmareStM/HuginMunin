@@ -2,6 +2,8 @@
 @inject INoteService NoteService
 @inject NavigationManager NavigationManager
 
+<link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
+
 <PageTitle>Elenco delle note</PageTitle>
 
 <h3>Elenco note</h3>
@@ -17,14 +19,28 @@ else{
     <p><em>Ci sono @NoteService.Notes.Count note</em></p>
 }
 
+<InputText class="form-control" placeholder="cerca" @bind-Value="src"></InputText>
+<button class="btn btn-primary" @onclick="(() => Search())">Cerca</button>
+
+<button class="btn btn-secondary"
+@onclick="(() => Reload())">
+    Ripristina
+</button>
+
 <table class="table">
     <thead>
         <tr>
             <th></th>
-            <th>Titolo</th>
-            <th>Descrizione</th>
+            <th class="sort-th" @onclick="@(() => SortTable("Title"))">
+                <span class="oi @(SetSortIcon("Title"))"></span> Titolo
+            </th>
+            <th class="sort-th">
+                Descrizione
+            </th>
             <th class="d-none d-md-table-cell">Tag</th>
-            <th class="d-none d-md-table-cell">Modificato</th>
+            <th class="d-none d-md-table-cell sort-th" @onclick="@(() => SortTable("Update"))">
+                <span class="oi @(SetSortIcon("Update"))"></span> Modificato
+            </th>
             <th class="d-none d-md-table-cell"></th>
             <th class="d-none d-md-table-cell"></th>
         </tr>
@@ -80,8 +96,16 @@ else{
 </button>
 
 @code {
+    string? src;
+
     protected override async Task OnInitializedAsync()
     {
+        await NoteService.GetNotes();
+    }
+
+    async Task Reload()
+    {
+        activeSortColumn = null;
         await NoteService.GetNotes();
     }
 
@@ -104,6 +128,53 @@ else{
     {
         await NoteService.DeleteNote(id);
         await NoteService.GetNotes();
+    }
+
+    private bool isSortedAscending;
+    private string activeSortColumn;
+    private void SortTable(string columnName)
+    {
+        if (columnName != activeSortColumn)
+        {
+            NoteService.Notes = NoteService.Notes.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            isSortedAscending = true;
+            activeSortColumn = columnName;
+        }
+        else
+        {
+            if (isSortedAscending)
+            {
+                NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                NoteService.Notes = NoteService.Notes.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            isSortedAscending = !isSortedAscending;
+        }
+    }
+
+    private string SetSortIcon(string columnName)
+    {
+        if (activeSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isSortedAscending)
+        {
+            return "oi-caret-top";
+        }
+        else
+        {
+            return "oi-caret-bottom";
+        }
+    }
+
+    async Task Search()
+    {
+        await NoteService.GetNotes();
+        if(src != "" && src != " " && src != null)
+            NoteService.Notes = NoteService.Notes.FindAll(n => n.Title.ToLower().Contains(src.ToLower()) || n.Description.ToLower().Contains(src.ToLower()));
     }
 }
 
