@@ -1,0 +1,106 @@
+﻿@page "/read/{id:int}"
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+
+<PageTitle>@note.Title</PageTitle>
+
+<h3>@note.Title <em id="id">(Id: @note.Id)</em></h3>
+
+<p>Ultima modifica: @note.Update</p>
+
+@if (note.Description.Length != 0)
+{
+    <br />
+    <em>Descrizione</em><br />
+    <p id="description">@note.Description</p>
+}
+@if (note.Tag.Length != 0)
+{
+    <br />
+    <em>Tag:</em><p id="tag">@note.Tag</p>
+}
+
+<button type="button" class="btn btn-primary"
+@onclick="GoBack">
+    <i class="oi oi-list"></i> Vai alla lista
+</button>
+
+<button class="btn btn-info"
+@onclick="(() => ShowNote(note.Id))">
+    <i class="oi oi-pencil"></i> Modifica nota
+</button>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    string btnText = string.Empty;
+
+    BlazorCrudDotNet7.Shared.Note note =
+        new BlazorCrudDotNet7.Shared.Note { Title = "Nota" };
+
+    protected override void OnInitialized()
+    {
+        btnText = Id == null ? "Salva nuova nota" : "Aggiorna nota";
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var result = await NoteService.GetNoteById((int)Id);
+            if (result is not null)
+                note = result;
+            else
+                NavigationManager.NavigateTo("/note");
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id is null)
+        {
+            await NoteService.CreateNote(note);
+        }
+        else
+        {
+            await NoteService.UpdateNote((int)Id, note);
+        }
+    }
+
+    async Task DeleteNote()
+    {
+        await NoteService.DeleteNote(note.Id);
+    }
+
+    void ShowNote(int id)
+    {
+        NavigationManager.NavigateTo($"nota/{id}");
+    }
+
+    void GoBack()
+    {
+        NavigationManager.NavigateTo($"note");
+    }
+}
+
+<style>
+    button{
+        margin-top: 10px;
+        margin-right: 2px;
+    }
+
+    p#description{
+        padding-left: 5px;
+        border-left: solid rebeccapurple;
+    }
+
+    em#id{
+        font-size: xx-small !important;
+        color: grey !important;
+    }
+
+    em{
+        color: rebeccapurple;
+    }
+</style>

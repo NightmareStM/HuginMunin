@@ -1,0 +1,75 @@
+﻿<style>
+    svg{
+        margin-right: 10px;
+    }
+
+    #logo{
+        transform: translateY(-10px);
+    }
+</style>
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="" id="logo">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                 width="55" height="55" viewBox="0 0 238.000000 250.000000"
+                 preserveAspectRatio="xMidYMid meet" >
+
+                <g transform="translate(0.000000,250.000000) scale(0.100000,-0.100000)"
+                   fill="currentColor" stroke="none">
+                    <path d="M1504 1820 c-33 -16 -75 -45 -93 -64 -44 -46 -39 -52 103 -123 125
+                    -62 195 -110 221 -150 l18 -27 -34 23 c-86 56 -226 99 -354 108 l-80 6 -205
+                    -188 c-211 -194 -251 -223 -527 -389 -89 -53 -165 -101 -168 -106 -11 -18 51
+                    -68 105 -84 102 -30 96 -33 336 157 120 95 226 177 234 182 8 4 -8 -16 -36
+                    -46 -28 -30 -59 -67 -69 -83 l-19 -29 64 -59 c75 -68 138 -92 269 -104 l83 -7
+                    29 -46 c40 -63 35 -80 -31 -114 l-55 -28 49 5 c27 3 127 6 223 6 190 0 202 4
+                    127 48 -33 19 -49 22 -106 19 l-67 -4 -57 64 c-31 35 -55 65 -53 67 2 1 56 28
+                    120 59 98 47 125 65 170 116 30 32 72 94 94 138 l40 78 0 140 c0 174 -7 208
+                    -43 225 -26 13 -25 14 43 25 39 7 84 17 100 24 17 6 37 14 45 17 9 3 -21 21
+                    -71 43 -47 21 -106 54 -132 74 -82 62 -183 73 -273 27z m163 -66 c3 -8 1 -20
+                    -5 -26 -15 -15 -43 8 -35 28 7 19 32 18 40 -2z" />
+                </g>
+            </svg>
+            Hugin & Munin
+        </a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="note">
+                <span class="oi oi-list" aria-hidden="true"></span> Note
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

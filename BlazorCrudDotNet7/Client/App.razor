@@ -1,0 +1,23 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div id="error">
+                <h1>404</h1>
+                <div id="container">
+                    <div class="crow"></div>
+                    <div id="message">
+                        <h2 role="alert">Oops! Pagina non trovata</h2>
+                        <p role="alert">
+                            Spiacenti ma la pagina non esiste, è stata rimossa, ha cambiato nome o è momentaneamente non disponibile. Torna alla <NavLink href="">HOME</NavLink>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

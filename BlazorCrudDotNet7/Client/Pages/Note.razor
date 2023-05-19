@@ -1,0 +1,148 @@
+﻿@page "/nota"
+@page "/nota/{id:int}"
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+
+<!--TODO mostrare (altra pag) note per modifica, sistemare anche che alla cancellazione di una nota porta alla pagina NOTES che si chiama NOTE--> 
+
+@if (Id is null)
+{
+    <PageTitle>Crea una nuova Nota</PageTitle>
+    <h3>Crea una nuova Nota</h3>
+}
+else
+{
+    <PageTitle>Modifica @note.Title</PageTitle>
+    <h3>Modifica @note.Title</h3>
+    <p>Ultima modifica: @note.Update</p>
+}
+
+<Popup @ref="popupRef" />
+
+<EditForm Model="note" OnSubmit="HandleSubmit">
+    <div>
+        <label for="title">Titolo</label>
+        <InputText id="title" @bind-Value="note.Title" class="form-control" placeholder="Titolo" />
+    </div>
+    <div>
+        <label for="description">Descrizione</label>
+        <InputTextArea id="description" @bind-Value="note.Description" class="form-control" placeholder="Descrizione" />
+    </div>
+    <div>
+        <label for="tag">Tag</label>
+        <InputText id="tag" @bind-Value="note.Tag" class="form-control" placeholder="Tag" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">@btnText</button>
+    @if(Id != null)
+    {
+        <button type="button" class="btn btn-info"
+            @onclick="Undo">
+            Annulla
+        </button>
+
+        <button type="button" class="btn btn-secondary"
+            @onclick="DuplicateNote">
+            Salva nuova nota
+        </button><br />
+    }
+    <button type="button" class="btn btn-danger"
+            @onclick="DeleteNote">
+        Elimina Nota
+    </button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    string btnText = string.Empty;
+
+    private Popup popupRef = new();
+
+    BlazorCrudDotNet7.Shared.Note note =
+        new BlazorCrudDotNet7.Shared.Note { Title = "Nuova Nota" };
+
+    protected override void OnInitialized()
+    {
+        btnText = Id == null ? "Salva nuova nota" : "Aggiorna nota";
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var result = await NoteService.GetNoteById((int)Id);
+            if (result is not null)
+                note = result;
+            else
+                NavigationManager.NavigateTo("/nota");
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if(Check())
+        {
+            note.Update = DateTime.Now;
+
+            if (Id is null)
+            {
+                await NoteService.CreateNote(note);
+            }
+            else
+            {
+                await NoteService.UpdateNote((int)Id, note);
+            }
+        }
+    }
+
+    async Task DeleteNote()
+    {
+        await NoteService.DeleteNote(note.Id);
+    }
+
+    async Task DuplicateNote()
+    {
+        if (Check())
+        {
+            BlazorCrudDotNet7.Shared.Note _note =
+            new BlazorCrudDotNet7.Shared.Note { Title = note.Title, Description = note.Description, Tag = note.Tag, Update = DateTime.Now };
+
+            await NoteService.CreateNote(_note);
+        }
+    }
+
+    void Undo()
+    {
+        NavigationManager.NavigateTo($"/read/{note.Id}");
+    }
+
+    bool Check()
+    {
+        if (note.Title == "" || note.Title == " ")
+        {
+            popupRef.Show("Il titolo non può essere vuoto", "Attenzione!");
+        }
+        else if (note.Tag.Length > 25)
+        {
+            popupRef.Show("Il tag può contenere MASSIMO 25 caratteri", "Attenzione!");
+        }
+        else if (note.Title.Length > 50)
+        {
+            popupRef.Show("Il titolo è preferibile di 50 o meno caratteri", "Attenzione!");
+        }
+        else
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+<style>
+    button{
+        margin: 2px;
+    }
+</style>

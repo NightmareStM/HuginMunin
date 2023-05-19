@@ -1,0 +1,115 @@
+﻿@page "/note"
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Elenco delle note</PageTitle>
+
+<h3>Elenco note</h3>
+
+@if(NoteService.Notes.Count == 0)
+{
+    <p><em>Non ci sono note, creane una!</em></p>
+}
+else if(NoteService.Notes.Count == 1){
+    <p><em>C'è @NoteService.Notes.Count nota</em></p>
+}
+else{
+    <p><em>Ci sono @NoteService.Notes.Count note</em></p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Titolo</th>
+            <th>Descrizione</th>
+            <th class="d-none d-md-table-cell">Tag</th>
+            <th class="d-none d-md-table-cell">Modificato</th>
+            <th class="d-none d-md-table-cell"></th>
+            <th class="d-none d-md-table-cell"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in NoteService.Notes)
+        {
+            <tr>
+                <td>
+                    <button class="btn btn-primary"
+                    @onclick="(() => ReadNote(note.Id))">
+                        <i class="oi oi-eye"></i>
+                    </button>
+                </td>
+                <td>@note.Title</td>
+                <td>
+                    @{
+                        string Description = note.Description;
+                        if (Description.Length > 75)
+                        {
+                            Description = Description.Substring(0, 75);
+                        }
+                    }
+                    @Description
+                    @if(note.Description.Length > 75)
+                    {
+                        <i>... <b class="readmore" @onclick="(() => ReadNote(note.Id))">(Leggi di più)</b></i>
+                    }
+                </td>
+                <td class="d-none d-md-table-cell">@note.Tag</td>
+                <td class="d-none d-md-table-cell">
+                    @note.Update.ToString("d")
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <button class="btn btn-outline-info"
+                        @onclick="(() => ShowNote(note.Id))">
+                        <i class="oi oi-pencil"></i>
+                    </button>
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <button class="btn btn-danger"
+                        @onclick="(() => DeleteNote(note.Id))">
+                        <i class="oi oi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button class="btn btn-primary"
+        @onclick="CreateNewNote">
+    Crea nuova nota
+</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await NoteService.GetNotes();
+    }
+
+    void ShowNote(int id)
+    {
+        NavigationManager.NavigateTo($"nota/{id}");
+    }
+
+    void ReadNote(int id)
+    {
+        NavigationManager.NavigateTo($"read/{id}");
+    }
+
+    void CreateNewNote()
+    {
+        NavigationManager.NavigateTo("/nota");
+    }
+
+    async Task DeleteNote(int id)
+    {
+        await NoteService.DeleteNote(id);
+        await NoteService.GetNotes();
+    }
+}
+
+<style>
+    .readmore:hover{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
