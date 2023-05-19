@@ -19,13 +19,18 @@ else{
     <p><em>Ci sono @NoteService.Notes.Count note</em></p>
 }
 
-<InputText class="form-control" placeholder="cerca" @bind-Value="src"></InputText>
-<button class="btn btn-primary" @onclick="(() => Search())">Cerca</button>
+<div id="searchArea">
+    <InputText class="form-control" placeholder="cerca" @bind-Value="src" @onkeypress="Search"></InputText>
+    <button class="btn btn-primary"
+        @onclick="(() => Search())">
+        Cerca
+    </button>
 
-<button class="btn btn-secondary"
-@onclick="(() => Reload())">
-    Ripristina
-</button>
+    <button class="btn btn-secondary"
+    @onclick="(() => Reload())">
+        Ripristina
+    </button>
+</div>
 
 <table class="table">
     <thead>
@@ -182,5 +187,9 @@ else{
     .readmore:hover{
         cursor: pointer;
         text-decoration: underline;
+    }
+
+    div#searchArea > button{
+        margin-top: 5px;
     }
 </style>
