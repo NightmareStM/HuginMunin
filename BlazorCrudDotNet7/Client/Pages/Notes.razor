@@ -177,6 +177,7 @@ else{
 
     async Task Search()
     {
+        activeSortColumn = null;
         await NoteService.GetNotes();
         if(src != "" && src != " " && src != null)
             NoteService.Notes = NoteService.Notes.FindAll(n => n.Title.ToLower().Contains(src.ToLower()) || n.Description.ToLower().Contains(src.ToLower()));
