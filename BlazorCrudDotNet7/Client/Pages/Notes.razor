@@ -1,6 +1,7 @@
 ﻿@page "/note"
 @inject INoteService NoteService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
 
@@ -87,7 +88,7 @@ else{
                 </td>
                 <td class="d-none d-md-table-cell">
                     <button class="btn btn-danger"
-                        @onclick="(() => DeleteNote(note.Id))">
+                        @onclick="(() => DeleteNote(note.Id, note.Title))">
                         <i class="oi oi-trash"></i>
                     </button>
                 </td>
@@ -129,8 +130,11 @@ else{
         NavigationManager.NavigateTo("/nota");
     }
 
-    async Task DeleteNote(int id)
+    async Task DeleteNote(int id, string title)
     {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare '{title}'?"))
+            return;
+
         await NoteService.DeleteNote(id);
         await NoteService.GetNotes();
     }
