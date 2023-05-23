@@ -4,7 +4,6 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<!--TODO mostrare (altra pag) note per modifica, sistemare anche che alla cancellazione di una nota porta alla pagina NOTES che si chiama NOTE--> 
 
 @if (Id is null)
 {
@@ -51,6 +50,18 @@ else
             @onclick="DeleteNote">
         Elimina Nota
     </button>
+
+    <button type="button" class="btn btn-danger"
+    @onclick="DeleteNote">
+        Test
+    </button>
+
+    @*<div class="alert alert-@warn @visibility" role="alert">
+        A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-@warn" role="progressbar" style="width: 100%" aria-valuenow="@time" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>*@
 </EditForm>
 
 @code {
@@ -69,11 +80,18 @@ else
     BlazorCrudDotNet7.Shared.Note note =
         new BlazorCrudDotNet7.Shared.Note { Title = "Nuova Nota" };
 
+    /// <summary>
+    /// setta il testo del bottone per submit
+    /// </summary>
     protected override void OnInitialized()
     {
         btnText = Id == null ? "Salva nuova nota" : "Aggiorna nota";
     }
 
+    /// <summary>
+    /// prende la nota in base all'Id, nel caso non la trovi reindirizza alla versione della pagina per la creazione di una nuova
+    /// </summary>
+    /// <returns></returns>
     protected override async Task OnParametersSetAsync()
     {
         if (Id is not null)
@@ -86,6 +104,10 @@ else
         }
     }
 
+    /// <summary>
+    /// all'invio fa un controllo e crea una nuova nota se non esisteva o aggiorna se esisteva già
+    /// </summary>
+    /// <returns></returns>
     async Task HandleSubmit()
     {
         if(Check())
@@ -98,6 +120,7 @@ else
             }
             else
             {
+                //potrebbe dare fastidio anche sull'aggiornare
                 //var dbnote = await NoteService.GetNoteById((int)Id);
                 //if(dbnote.Title != note.Title || dbnote.Description != note.Description || dbnote.Tag != note.Tag)
                 //{
@@ -109,6 +132,10 @@ else
         }
     }
 
+    /// <summary>
+    /// Elimina la nota corrente
+    /// </summary>
+    /// <returns></returns>
     async Task DeleteNote()
     {
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare '{note.Title}'?"))
@@ -117,6 +144,10 @@ else
         await NoteService.DeleteNote(note.Id);
     }
 
+    /// <summary>
+    /// Salva le modifiche effettuate in una nuova nota
+    /// </summary>
+    /// <returns></returns>
     async Task DuplicateNote()
     {
         if (Check())
@@ -128,6 +159,10 @@ else
         }
     }
 
+    /// <summary>
+    /// Annulla le modifice effettuate
+    /// </summary>
+    /// <returns></returns>
     async Task Undo()
     {
         var dbnote = await NoteService.GetNoteById((int)Id);
@@ -139,6 +174,12 @@ else
         NavigationManager.NavigateTo($"/read/{note.Id}");
     }
 
+    /// <summary>
+    /// Controllo di validità delle modifiche
+    /// </summary>
+    /// <returns>
+    /// ritorna true se i campi rispettano le condizioni, falso se non le rispettano (e mostra messaggio di errore)
+    /// </returns>
     bool Check()
     {
         if (note.Title == "" || note.Title == " ")

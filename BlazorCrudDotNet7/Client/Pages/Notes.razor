@@ -104,33 +104,58 @@ else{
 @code {
     string? src;
 
+    /// <summary>
+    /// prende tutte le note dal database e le inserisce nella lista NoteService
+    /// </summary>
+    /// <returns></returns>
     protected override async Task OnInitializedAsync()
     {
         await NoteService.GetNotes();
     }
 
+    /// <summary>
+    /// ricarica la pagina
+    /// </summary>
+    /// <returns></returns>
     async Task Reload()
     {
         activeSortColumn = null;
         await NoteService.GetNotes();
     }
 
+    /// <summary>
+    /// mostra la nota selezionata
+    /// </summary>
+    /// <param name="id">id della nota da modificare</param>
     void ShowNote(int id)
     {
         NavigationManager.NavigateTo($"nota/{id}");
     }
 
+    /// <summary>
+    /// legge la nota selezionata
+    /// </summary>
+    /// <param name="id">id della nota da leggere</param>
     void ReadNote(int id)
     {
         NavigationManager.NavigateTo($"read/{id}");
     }
 
+    /// <summary>
+    /// reindirizza alla pagina per la creazione di una nuova nota
+    /// </summary>
     void CreateNewNote()
     {
         NavigationManager.NavigateTo("/nota");
     }
 
-    async Task DeleteNote(int id, string title)
+    /// <summary>
+    /// eliminazione di una nota selezionata
+    /// </summary>
+    /// <param name="id">id della prova da eliminare</param>
+    /// <param name="title">titolo della nota, titolo visibile nel massaggio di conferma</param>
+    /// <returns></returns>
+    async Task DeleteNote(int id, string? title)
     {
         if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare '{title}'?"))
             return;
@@ -141,6 +166,11 @@ else{
 
     private bool isSortedAscending;
     private string activeSortColumn;
+
+    /// <summary>
+    /// ordina la tabella in base ad un campo selezionato
+    /// </summary>
+    /// <param name="columnName">nome del campo sul quale la tabella verrà riordinata</param>
     private void SortTable(string columnName)
     {
         if (columnName != activeSortColumn)
@@ -163,6 +193,11 @@ else{
         }
     }
 
+    /// <summary>
+    /// implementa il simbolo vincino al nome della colonna di riordino
+    /// </summary>
+    /// <param name="columnName">nome della colonna a cui applicare l'icona</param>
+    /// <returns></returns>
     private string SetSortIcon(string columnName)
     {
         if (activeSortColumn != columnName)
@@ -179,6 +214,10 @@ else{
         }
     }
 
+    /// <summary>
+    /// ricerca di una determinata parola/frase all'interno della descrizione e titolo di tutte le note
+    /// </summary>
+    /// <returns></returns>
     async Task Search()
     {
         activeSortColumn = null;
