@@ -5,20 +5,76 @@
 <PageTitle>Tag</PageTitle>
 
 <style>
-    .collapse:not(.show) {
+    details {
+        min-width: 70%;
+        margin: 0 auto;
+        background: white;
+        color: black;
+        margin-bottom: .5rem;
+        box-shadow: 0 .1rem 1rem -.5rem rgba(0,0,0,.4);
+        overflow: hidden;
+    }
+
+    summary {
+        padding: 1rem;
+        display: block;
+        background: rebeccapurple;
+        color: #fff;
+        padding-left: 2.2rem;
+        position: relative;
+        cursor: pointer;
+    }
+
+    summary:before {
+        content: '';
+        border-width: .4rem;
+        border-style: solid;
+        border-color: transparent transparent transparent #fff;
+        position: absolute;
+        top: 1.3rem;
+        left: 1rem;
+        transform: rotate(0);
+        transform-origin: .2rem 50%;
+        transition: .25s transform ease;
+    }
+
+    /* summary + div{
+        background-color: white;
+        color: black;
+    } */
+
+    details[open] > summary:before {
+        transform: rotate(90deg);
+    }
+
+
+    details summary::-webkit-details-marker {
         display: none;
     }
 
-    .collapsing {
-        height: 0;
-        overflow: hidden;
-        transition: height 0.35s ease;
+    details > ul {
+        padding-bottom: 1rem;
+        margin-bottom: 0;
+    }
+
+    body {
+        /*background: #222;*/
+        height: 100vh;
+        font-family: sans-serif;
+        color: white;
+        line-height: 1.5;
+        letter-spacing: 1px;
+        margin-top: 2rem;
+    }
+
+    h3{
+        color: black;
     }
 </style>
 
 <h3>Tags</h3>
 
-<div id="tag-container">
+@*<div id="tag-container">
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         Button with data-bs-target
     </button>
@@ -27,9 +83,62 @@
             Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
         </div>
     </div>
-</div>
+</div>*@
 
-
+<details>
+        <summary>Tag1</summary>
+        <div>
+            <table class="table">
+                <tbody>
+                    <tr id="IDNOTA">
+                        <td>TITOLONOTA</td>
+                        <td>
+                            DESCRIZIONENOTA
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            DATANOTA
+                        </td>
+                    </tr>
+                    <tr id="IDNOTA">
+                        <td>TITOLONOTA1416565</td>
+                        <td>
+                            DESCRIZIONENOTA165165165
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            DATANOTA16565165
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+    <details>
+        <summary>Tag2</summary>
+        <div>
+            <table class="table">
+                <tbody>
+                    <tr id="IDNOTA">
+                        <td>TITOLONOTA86</td>
+                        <td>
+                            DESCRIZIONENOTA
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            DATANOTA
+                        </td>
+                    </tr>
+                    <tr id="IDNOTA">
+                        <td>TITOLONOTA1475</td>
+                        <td>
+                            DESCRIZIONENOTA1565165
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            DATANOTA1656575
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
 
 @code {
     
