@@ -133,8 +133,10 @@ else{
 
         if (delete)
         {
-            if(NoteService.GetNoteById(id) != null)
-                DeleteNote(id);
+            if(await NoteService.GetNoteById(id) != null)
+                await DeleteNote(id);
+            else
+                NavigationManager.NavigateTo($"note");
         }
     }
 

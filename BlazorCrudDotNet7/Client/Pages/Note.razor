@@ -48,7 +48,7 @@ else
     }
     <button type="button" class="btn btn-danger"
             @onclick="DeleteNote">
-        Elimina Nota
+        @btnDel
     </button>
 </EditForm>
 
@@ -57,6 +57,7 @@ else
     public int? Id { get; set; }
 
     string btnText = string.Empty;
+    string btnDel = string.Empty;
 
     private Popup popupRef = new();
 
@@ -69,6 +70,7 @@ else
     protected override void OnInitialized()
     {
         btnText = Id == null ? "Salva nuova nota" : "Aggiorna nota";
+        btnDel = Id == null ? "Scarta nota" : "Elimina Nota";
     }
 
     /// <summary>
@@ -121,7 +123,13 @@ else
     /// <returns></returns>
     async Task DeleteNote()
     {
-        NavigationManager.NavigateTo($"/note/true/{note.Id}");
+        if(Id is null)
+            if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler scartare la nota?"))
+                return;
+            else
+                NavigationManager.NavigateTo($"/note");
+        else
+            NavigationManager.NavigateTo($"/note/true/{note.Id}");
     }
 
     /// <summary>
