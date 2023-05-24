@@ -50,18 +50,6 @@ else
             @onclick="DeleteNote">
         Elimina Nota
     </button>
-
-    <button type="button" class="btn btn-danger"
-    @onclick="DeleteNote">
-        Test
-    </button>
-
-    @*<div class="alert alert-@warn @visibility" role="alert">
-        A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped bg-@warn" role="progressbar" style="width: 100%" aria-valuenow="@time" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    </div>*@
 </EditForm>
 
 @code {
@@ -69,11 +57,6 @@ else
     public int? Id { get; set; }
 
     string btnText = string.Empty;
-
-    int time = 0;
-    string? warn = null;
-    string? visibility = "d-none";
-    //danger o warning
 
     private Popup popupRef = new();
 
@@ -138,10 +121,7 @@ else
     /// <returns></returns>
     async Task DeleteNote()
     {
-        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare '{note.Title}'?"))
-            return;
-
-        await NoteService.DeleteNote(note.Id);
+        NavigationManager.NavigateTo($"/note/true/{note.Id}");
     }
 
     /// <summary>

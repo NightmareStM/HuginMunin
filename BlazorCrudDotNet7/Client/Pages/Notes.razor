@@ -1,4 +1,5 @@
 ﻿@page "/note"
+@page "/note/{delete:bool}/{id:int}"
 @inject INoteService NoteService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -19,6 +20,13 @@ else if(NoteService.Notes.Count == 1){
 else{
     <p><em>Ci sono @NoteService.Notes.Count note</em></p>
 }
+
+<div class="alert alert-@warn @visibility" role="alert" id="alert">
+    Stai eliminando la nota! Vuoi <a @onclick="CancelDelete" class="alert-link" style="cursor: pointer;">ANNULLARE</a>?
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-@warn" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
 
 <div id="searchArea">
     <InputText class="form-control" placeholder="cerca" @bind-Value="src" @onkeypress="Search"></InputText>
@@ -54,7 +62,7 @@ else{
     <tbody>
         @foreach (var note in NoteService.Notes)
         {
-            <tr>
+            <tr id="@note.Id">
                 <td>
                     <button class="btn btn-primary"
                     @onclick="(() => ReadNote(note.Id))">
@@ -88,7 +96,7 @@ else{
                 </td>
                 <td class="d-none d-md-table-cell">
                     <button class="btn btn-danger"
-                        @onclick="(() => DeleteNote(note.Id, note.Title))">
+                        @onclick="(() => DeleteNote(note.Id))">
                         <i class="oi oi-trash"></i>
                     </button>
                 </td>
@@ -102,7 +110,18 @@ else{
 </button>
 
 @code {
+    [Parameter]
+    public bool delete { get; set; } = false;
+
+    [Parameter]
+    public int id { get; set; }
+
     string? src;
+    int time = 0;
+    string? warn = null; //danger o warning
+    string? visibility = "d-none";
+    bool confirm = true;
+    CancellationTokenSource cts;
 
     /// <summary>
     /// prende tutte le note dal database e le inserisce nella lista NoteService
@@ -111,6 +130,45 @@ else{
     protected override async Task OnInitializedAsync()
     {
         await NoteService.GetNotes();
+
+        if (delete)
+        {
+            if(NoteService.GetNoteById(id) != null)
+                DeleteNote(id);
+        }
+    }
+
+    /// <summary>
+    /// eliminazione di una nota selezionata
+    /// </summary>
+    /// <param name="id">id della prova da eliminare</param>
+    /// <returns></returns>
+    async Task DeleteNote(int id)
+    {
+        visibility = "";
+        warn = "danger";
+        NoteService.Notes = NoteService.Notes.FindAll(n => n.Id != id);
+        cts = new CancellationTokenSource();
+        Task.Delay(new TimeSpan(0, 0, 5), cts.Token).ContinueWith(async o => { await ConfirmDelete(id); });
+    }
+
+    async Task CancelDelete()
+    {
+        confirm = false;
+        cts.Cancel();
+    }
+
+    async Task ConfirmDelete(int id)
+    {
+        visibility = "d-none";
+
+        if(confirm)
+            await NoteService.DeleteNote(id);
+
+        await Search();
+
+        StateHasChanged();
+        confirm = true;
     }
 
     /// <summary>
@@ -119,6 +177,7 @@ else{
     /// <returns></returns>
     async Task Reload()
     {
+        src = null;
         activeSortColumn = null;
         await NoteService.GetNotes();
     }
@@ -149,20 +208,6 @@ else{
         NavigationManager.NavigateTo("/nota");
     }
 
-    /// <summary>
-    /// eliminazione di una nota selezionata
-    /// </summary>
-    /// <param name="id">id della prova da eliminare</param>
-    /// <param name="title">titolo della nota, titolo visibile nel massaggio di conferma</param>
-    /// <returns></returns>
-    async Task DeleteNote(int id, string? title)
-    {
-        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare '{title}'?"))
-            return;
-
-        await NoteService.DeleteNote(id);
-        await NoteService.GetNotes();
-    }
 
     private bool isSortedAscending;
     private string activeSortColumn;
@@ -235,5 +280,28 @@ else{
 
     div#searchArea > button{
         margin-top: 5px;
+    }
+
+    #alert{
+        position: fixed;
+        min-width: 75%;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+    }
+
+    @@keyframes decrease {
+        from {
+            width: 100%;
+        }
+
+        to {
+            width: 0%;
+        }
+    }
+
+    .progress {
+        animation-name: decrease;
+        animation-duration: 6s;
     }
 </style>
