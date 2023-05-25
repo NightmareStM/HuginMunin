@@ -7,13 +7,15 @@ Aprire il PowerShell nella cartella /Server/ ed eseguire: ```dotnet ef database 
 
 ## Pagine
 > Home<br />
-> Note
+> Note<br />
+> Tag
 
 ## Path
 /notes<br />
 /note<br />
 /note/{id}<br />
-/read/{id}
+/read/{id}<br />
+/tag
 
 ## Da fare
 1. miglioramenti alla home
