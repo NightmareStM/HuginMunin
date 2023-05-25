@@ -60,6 +60,19 @@
     h3{
         color: black;
     }
+
+    .readmore:hover {
+        text-decoration: underline;
+    }
+
+    tr:hover{
+        cursor: pointer;
+        background-color: rgba(102, 51, 153, 0.25);
+    }
+
+    td#update{
+        text-align: right !important;
+    }
 </style>
 
 <h3>Tag</h3>
@@ -78,12 +91,23 @@
             <table class="table">
                 <tbody>
                     @foreach(var note in NoteService.Notes.FindAll(n => n.Tag == tag)){
-                        <tr id="@note.Id">
+                        <tr id="@note.Id" @onclick="(() => ReadNote(note.Id))">
                             <td>@note.Title</td>
                             <td>
-                                @note.Description
+                                @{
+                                    string Description = note.Description;
+                                    if (Description.Length > 75)
+                                    {
+                                        Description = Description.Substring(0, 75);
+                                    }
+                                }
+                                @Description
+                                @if (note.Description.Length > 75)
+                                {
+                                    <i>... <b class="readmore">(Leggi di più)</b></i>
+                                }
                             </td>
-                            <td class="d-none d-md-table-cell">
+                            <td class="d-none d-md-table-cell" id="update">
                                 @note.Update
                             </td>
                         </tr>
@@ -98,5 +122,10 @@
     protected override async Task OnInitializedAsync()
     {
         await NoteService.GetNotes();
+    }
+
+    void ReadNote(int id)
+    {
+        NavigationManager.NavigateTo($"read/{id}");
     }
 }
