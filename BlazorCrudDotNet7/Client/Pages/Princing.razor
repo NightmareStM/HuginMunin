@@ -1,0 +1,113 @@
+﻿@page "/price"
+@inject NavigationManager NavigationManager
+
+<h3>Prezzi</h3>
+    <div class="container-fluid">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card card1 h-100">
+            <div class="card-body">
+             
+              <h5 class="card-title">Base</h5>
+              <br><br>
+              <span class="h2">Gratis</span>
+              <br><br>
+              <div class="d-grid my-3">
+                <button class="btn btn-outline-dark btn-block" @onclick="@(() => ToLink("https://youtu.be/dQw4w9WgXcQ"))">Seleziona</button>
+              </div>
+              <ul>
+                <li>Niente Pipette >:(</li>
+                <li>Ti prendiamo tutti i dati che vogliamo (come Google ma te lo diciamo)</li>
+                <li>Finchè stai sotto il tetto del nostro sito comandiamo noi</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card card2 h-100">
+            <div class="card-body">
+             
+              <h5 class="card-title">Standard</h5>
+              <br><br>
+              <span class="h2">€50</span>/mese
+              <br><br>
+              <div class="d-grid my-3">
+                <button class="btn btn-outline-dark btn-block" @onclick="@(() => ToLink("https://youtu.be/waapP8AIi-Q"))">Seleziona</button>
+              </div>
+              <ul>
+                <li>Una Pipetta fredda in omaggio al mese</li>
+                <li>Magicamente non ci interessano più i tuoi dati</li>
+                <li>Avremo un rapporto P2P</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card card3 h-100">
+            <div class="card-body">
+              <h5 class="card-title">Premium</h5>
+              <br><br>
+              <span class="h2">€100</span>/mese
+              <br><br>
+              <div class="d-grid my-3">
+                    <button class="btn btn-outline-dark btn-block" @onclick="@(() => ToLink("https://youtu.be/dQw4w9WgXcQ"))">Seleziona</button>
+              </div>
+              <ul>
+                <li>Pipette calde a 4Km da te</li>
+                <li>Tranquillo, proteggeremo la tua privacy sempre e ovunque</li>
+                <li>Benvenuto padrone</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>    
+    </div>
+</div>
+
+@code {
+    void ToLink(string URL)
+    {
+        NavigationManager.NavigateTo($"{URL}");
+    }
+}
+
+<style>
+    .card1:hover {
+        background: #474ce6;
+        border: 1px solid #474ce6;
+        color: white;
+    }
+
+    .card1:hover .list-group-item {
+        background: #474ce6 !important;
+        color: white;
+    }
+
+    .card2:hover {
+        background: #6f3abe;
+        border: 1px solid #6f3abe;
+        color: white;
+    }
+
+    .card2:hover .list-group-item {
+        background: #6f3abe !important;
+        color: white;
+    }
+
+    .card3:hover {
+        background: rebeccapurple;
+        border: 1px solid rebeccapurple;
+        color: white;
+    }
+
+    .card3:hover .list-group-item {
+        background: rebeccapurple !important;
+        color: white;
+    }
+
+    .card:hover .btn-outline-dark {
+        color: white;
+        background: #212529;
+    }
+</style>
