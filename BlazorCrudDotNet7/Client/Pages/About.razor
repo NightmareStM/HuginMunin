@@ -1,4 +1,5 @@
 ﻿@page "/about"
+@inject NavigationManager NavigationManager
 
 <h3>About</h3>
 
@@ -7,7 +8,7 @@
     <section class="py-5 bg-white" id="scroll-target">
         <div class="container px-5 my-5">
             <div class="row gx-5 align-items-center">
-                <div class="col-lg-6"><img class="img-fluid rounded mb-5 mb-lg-0" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
+                <div class="col-lg-6" @onclick="@(() => ToLink("/price"))"><img class="img-fluid rounded mb-5 mb-lg-0" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
                 <div class="col-lg-6">
                     <h2 class="fw-bolder">Our founding</h2>
                     <p class="lead fw-normal text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto est, ut esse a labore aliquam beatae expedita. Blanditiis impedit numquam libero molestiae et fugit cupiditate, quibusdam expedita, maiores eaque quisquam.</p>
@@ -37,8 +38,8 @@
             <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
                 <div class="col mb-5 mb-5 mb-xl-0">
                     <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" src="/Images/Gianni.png" alt="Gianni il Piccione" />
-                        <h5 class="fw-bolder">Gianni il Piccione</h5>
+                        <img class="img-fluid rounded-circle mb-4 px-4" src="/Images/Gianni.png" alt="Gianni" />
+                        <h5 class="fw-bolder">Gianni</h5>
                         <div class="fst-italic text-muted">Fondatore &amp; CEO</div>
                     </div>
                 </div>
@@ -60,6 +61,7 @@
                     <div class="text-center">
                         <img class="img-fluid rounded-circle mb-4 px-4" src="/Images/Bing-Emblem.png" alt="Bing" />
                         <h5 class="fw-bolder">Bing</h5>
+                        <h6 id="bing">Non ho un cognome perché sono un motore di ricerca. 😊</h6>
                         <div class="fst-italic text-muted">ICT Consultant</div>
                     </div>
                 </div>
@@ -69,5 +71,15 @@
 </main>
 
 @code {
-
+    void ToLink(string URL)
+    {
+        NavigationManager.NavigateTo($"{URL}");
+    }
 }
+
+<style>
+    h6#bing{
+        font-size: smaller !important;
+        color: grey !important;
+    }
+</style>

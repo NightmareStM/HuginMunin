@@ -1,0 +1,36 @@
+﻿@page "/JDA"
+@page "/JeanneDArc"
+
+<h3>Giovanna D'Arco</h3>
+
+<figure class="figure" @onclick="@(() => View())">
+    <img src="/Images/Jeanne.jpg" class="figure-img img-fluid rounded" alt="Jeanne D Arc">
+    <figcaption class="figure-caption">Immagine di Giovanna D'Arco</figcaption>
+</figure>
+
+@if (view)
+{
+    <figure class="figure">
+        <img src="/Images/JeanneFate.jpg" class="figure-img img-fluid rounded" alt="Jeanne D Arc">
+        <figcaption class="figure-caption">Immagine di Giovanna D'Arco, ma reinterpretata</figcaption>
+    </figure>
+}
+
+<p>Mio caro lettore, forse non riuscirai a capire cosa c'entra Giovanna D'Arco con un sito che si occupa di note online, con CEO un Corvo-Piccione che fa finta di essere una papera. Beh... Hai ragione... Non c'entra, ma è stata una figura storica importante, quindi è giusto rendergli omaggio</p>
+<br />
+<p>
+    Giovanna d'Arco (in francese Jeanne d'Arc, in francese medio Jehanne Darc; Domrémy, 6 gennaio 1412 – Rouen, 30 maggio 1431) è stata un'eroina nazionale francese, venerata come santa dalla Chiesa cattolica, conosciuta anche come «la pulzella d'Orléans» (in francese «la pucelle d'Orléans»).
+    <br />
+    Recuperò alla Francia parte del territorio caduto in mano agli Inglesi durante la Guerra dei cent'anni, contribuendo a risollevarne le sorti, guidando vittoriosamente le armate francesi contro quelle inglesi. Catturata dai Borgognoni davanti a Compiègne, Giovanna fu venduta agli inglesi da Giovanni di Lussemburgo, vassallo del re d'Inghilterra. Questi la sottoposero a processo per eresia, al termine del quale fu condannata al rogo e arsa viva il 30 maggio 1431. Nel 1456 papa Callisto III, al termine di una seconda inchiesta, dichiarò la nullità di tale processo.
+    <br />
+    Beatificata nel 1909 da Pio X e canonizzata nel 1920 da Benedetto XV, nel 1922 Giovanna fu proclamata santa patrona della Francia.
+</p>
+
+@code {
+    bool view = false;
+
+    void View()
+    {
+        view = !view;
+    }
+}
