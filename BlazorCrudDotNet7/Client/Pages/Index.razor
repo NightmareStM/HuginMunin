@@ -2,8 +2,8 @@
 
 <PageTitle>Index</PageTitle>
 
-<div class="content">
-    <h2>
+<div>
+    <h2 @onclick=@(()=>hidden=!hidden)>
         Hugin & Munin <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                            width="200" height="200" viewBox="0 0 238.000000 250.000000"
                            preserveAspectRatio="xMidYMid meet">
@@ -44,4 +44,20 @@
         </svg>
     </h2>
 </div>
+@*<div id="text">
+    <p class="fs-1 fst-italic text-muted text-center">Le note online che si adattano alle tue esigenze.</p>
+</div>*@
+
+@code{
+    bool hidden = true;
+}
+
+@if (!hidden)
+{
+    <audio autoplay controls><source src="/Audio/internet.mp3" /></audio>
+}
+else
+{
+    <audio controls muted><source src="/Audio/internet.mp3" /></audio>
+}
 @*<SurveyPrompt Title="How is Blazor working for you?" />*@

@@ -3,8 +3,6 @@
     font-size: 8em;
     position: absolute;
     font-family: sans-serif;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 h2:nth-child(1) {
@@ -33,7 +31,7 @@ h2:nth-child(2) {
     }
 }
 
-p{
-    position: relative;
-    top: 10px;
+audio {
+    width: 0 !important;
+    height: 0 !important;
 }
