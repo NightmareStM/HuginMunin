@@ -1,0 +1,30 @@
+﻿@page "/Gianni"
+
+<h3>@title</h3>
+
+@foreach(var t in txt)
+{
+    <p class="lead fw-normal mb-0">@t</p>
+}
+
+@code {
+    string title = "Gianni: il corvo che ha rivoluzionato il mondo con le sue idee";
+    string[] txt = new string[]
+    {
+        "Gianni è un corvo nato il 5 aprile 2023 nel laboratorio 416 da due scienziati e programmatori, Stefano Marcelli e Giulia Marelli. Fin da piccolo, Gianni ha dimostrato di avere una saggezza e una curiosità fuori dal comune. Il suo sogno era di cambiare il mondo con le sue idee e di aiutare gli altri corvi a vivere meglio.",
+        "Per realizzare il suo sogno, Gianni ha stretto un’amicizia con Massimo Visco, un noto imprenditore e filantropo che lo ha sostenuto e consigliato nella sua carriera. Grazie a lui, Gianni ha potuto fondare e finanziare moltissimi progetti e start-up in vari settori, dalla biotecnologia alla robotica, dalla realtà virtuale all’intelligenza artificiale.",
+        "Il suo progetto più importante è il sito Hugin & Munin, una piattaforma online che mette in contatto i corvi di tutto il mondo e li aiuta a condividere le loro conoscenze e le loro esperienze. Il sito è stato creato dai suoi stessi genitori, Stefano e Giulia, che sono diventati i suoi migliori amici e collaboratori.",
+        "Gianni si comporta come un umano e si veste come Paperon De Paperoni, con un cilindro nero e una papillon rossa. Ha un carattere ironico e provocatorio e non teme di esprimere le sue opinioni, anche se a volte sono controverse o impopolari. Il suo motto è: “Siate audaci, siate folli, siate piccioni”.🕊",
+        "Gianni è considerato il corvo più influente del mondo e il suo sito Hugin & Munin ha milioni di utenti. La sua storia è un esempio di come un sogno possa diventare realtà con la passione, la creatività e la determinazione."
+    };
+}
+
+<style>
+    h3{
+        margin-bottom: 15px;
+    }
+
+    p + p{
+        margin-top: 5px;
+    }
+</style>
