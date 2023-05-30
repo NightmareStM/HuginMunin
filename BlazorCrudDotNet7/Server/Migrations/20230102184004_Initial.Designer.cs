@@ -58,7 +58,7 @@ namespace BlazorCrudDotNet7.Server.Migrations
                             Description = "Immos a las pipas",
                             Tag = "pipette",
                             Title = "PorcaPipetta",
-                            Update = "2023-05-15 18:59:34"
+                            Update = "7013-07-17 18:59:34"
                         },
                         new
                         {

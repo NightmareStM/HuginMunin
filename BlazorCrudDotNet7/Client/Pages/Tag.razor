@@ -73,9 +73,14 @@
     td#update{
         text-align: right !important;
     }
+
+    em#id {
+        font-size: xx-small !important;
+        color: #177013 !important;
+    }
 </style>
 
-<h3>Tag</h3>
+<h3>Tag <em id="id">177013</em></h3>
 
 @foreach (var tag in NoteService.Notes.Select(n => n.Tag).Distinct().OrderBy(tag => tag).ToList())
 {

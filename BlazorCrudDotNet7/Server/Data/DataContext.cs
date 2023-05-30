@@ -25,7 +25,7 @@ namespace BlazorCrudDotNet7.Server.Data
                         Title = "PorcaPipetta",
                         Description = "Immos a las pipas",
                         Tag = "pipette",
-                        Update = new DateTime(2023, 05, 15, 18, 59, 34)
+                        Update = new DateTime(7023, 07, 17, 18, 59, 34)
                     },
                     new Note
                     {
