@@ -4,7 +4,13 @@
 
 <PageTitle>@note.Title</PageTitle>
 
-<h3>@note.Title <em id="id">(Id: @note.Id)</em></h3>
+<h3>
+    @if (note.Title.ToLower().Contains("pipetta") || note.Title.ToLower().Contains("pipette"))
+    {
+        <i class="oi oi-eyedropper"></i>
+    }
+    @note.Title <em id="id">(Id: @note.Id)</em>
+</h3>
 
 <p>Ultima modifica: @note.Update</p>
 
