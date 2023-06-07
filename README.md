@@ -14,6 +14,7 @@ Aprire il PowerShell nella cartella /Server/ ed eseguire: ```dotnet ef database 
 /notes<br />
 /note<br />
 /note/{id}<br />
+/note/true/{id}<br />
 /read/{id}<br />
 /tag
 
