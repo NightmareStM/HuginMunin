@@ -23,3 +23,5 @@ Aprire il PowerShell nella cartella /Server/ ed eseguire: ```dotnet ef database 
 2. miglioramenti alla pagina della tabella delle note
 3. creazione pagina recenti
 4. creazione pagine di utilità
+5. creazione e gestione per login (mail o meno)
+6. implementazione della condivisione delle note (visualizza o modifica)
