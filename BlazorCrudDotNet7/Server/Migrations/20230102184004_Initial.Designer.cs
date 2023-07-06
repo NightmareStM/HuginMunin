@@ -19,7 +19,7 @@ namespace BlazorCrudDotNet7.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("NoteVersion", "8.0.0")
+                .HasAnnotation("NoteVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -44,6 +44,10 @@ namespace BlazorCrudDotNet7.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Update")
+                        .IsRequired()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("Create")
                         .IsRequired()
                         .HasColumnType("datetime");
 

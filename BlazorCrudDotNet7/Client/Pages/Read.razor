@@ -12,7 +12,14 @@
     @note.Title <em id="id">(Id: @note.Id)</em>
 </h3>
 
-<p>Ultima modifica: @note.Update</p>
+<p>
+    <span>Data di creazione: @note.Create</span>
+@if (note.Update != note.Create)
+{
+    <br />
+    <span>Ultima modifica: @note.Update</span>
+}
+</p>
 
 @if (note.Description.Length != 0)
 {

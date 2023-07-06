@@ -17,7 +17,7 @@ namespace BlazorCrudDotNet7.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("NoteVersion", "8.0.0")
+                .HasAnnotation("NoteVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -45,6 +45,10 @@ namespace BlazorCrudDotNet7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime>("Create")
+                        .IsRequired()
+                        .HasColumnType("datetime");
+
                     b.HasKey("Id");
 
                     b.ToTable("Notes");
@@ -56,7 +60,8 @@ namespace BlazorCrudDotNet7.Server.Migrations
                             Description = "Immos a las pipas",
                             Tag = "pipette",
                             Title = "PorcaPipetta",
-                            Update = "7013-07-17 18:59:34"
+                            Update = "7013-07-17 18:59:34",
+                            Create = "7013-07-17 18:59:34"
                         },
                         new
                         {
@@ -64,7 +69,8 @@ namespace BlazorCrudDotNet7.Server.Migrations
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                             Tag = "Lorem",
                             Title = "Lorem Ipsum",
-                            Update = "2023-05-16 17:04:00"
+                            Update = "2023-05-16 17:04:00",
+                            Create = "2023-05-16 17:04:00"
                         },
                         new
                         {
@@ -72,7 +78,8 @@ namespace BlazorCrudDotNet7.Server.Migrations
                             Description = "boh",
                             Tag = "boh",
                             Title = "boh",
-                            Update = "2023-05-17 12:30:00"
+                            Update = "2023-05-17 12:30:00",
+                            Create = "2023-05-17 12:30:00"
                         },
                         new
                         {
@@ -80,7 +87,8 @@ namespace BlazorCrudDotNet7.Server.Migrations
                             Description = "boh1",
                             Tag = "boh",
                             Title = "boh1",
-                            Update = "2023-05-17 12:31:00"
+                            Update = "2023-05-17 12:31:00",
+                            Create = "2023-05-17 12:31:00"
                         }
                     );
                 });

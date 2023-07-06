@@ -18,5 +18,9 @@ namespace BlazorCrudDotNet7.Shared
         public string Tag { get; set; } = string.Empty;
 
         public DateTime Update { get; set; } = DateTime.Now;
+
+        public DateTime Create { get; set; } = DateTime.Now;
+
+        //public int Creator {get; set;};
     }
 }

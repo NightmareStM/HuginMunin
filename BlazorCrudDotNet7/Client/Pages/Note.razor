@@ -101,6 +101,7 @@ else
 
             if (Id is null)
             {
+                note.Create = note.Update;
                 await NoteService.CreateNote(note);
             }
             else
