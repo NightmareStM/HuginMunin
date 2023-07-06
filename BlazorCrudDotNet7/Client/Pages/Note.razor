@@ -41,15 +41,31 @@ else
             Annulla
         </button>
 
-        <button type="button" class="btn btn-dark"
-            @onclick="DuplicateNote">
-            Salva nuova nota
-        </button><br />
+        <br />
     }
     <button type="button" class="btn btn-danger"
             @onclick="DeleteNote">
         @btnDel
     </button>
+
+    @if (Id != null)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" @onchange="AdvancedOption">
+            <label class="form-check-label" for="defaultCheck1">
+                Opzioni avanzate
+            </label>
+        </div>
+        @if (advancedOpt)
+        {
+            <div>
+                <button type="button" class="btn btn-dark"
+                @onclick="DuplicateNote">
+                    Salva come nuova nota
+                </button>
+            </div>
+        }
+    }
 </EditForm>
 
 @code {
@@ -60,6 +76,8 @@ else
     string btnDel = string.Empty;
 
     private Popup popupRef = new();
+
+    private bool advancedOpt = false;
 
     BlazorCrudDotNet7.Shared.Note note =
         new BlazorCrudDotNet7.Shared.Note { Title = "Nuova Nota" };
@@ -190,10 +208,19 @@ else
 
         return false;
     }
+
+    private void AdvancedOption(ChangeEventArgs e)
+    {
+        advancedOpt = !advancedOpt;
+    }
 }
 
 <style>
     button{
         margin: 2px;
+    }
+
+    .form-check{
+        margin-top: 10px;
     }
 </style>

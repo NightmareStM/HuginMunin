@@ -130,7 +130,7 @@ else{
     string? warn = null; //danger o warning
     string? visibility = "d-none";
     bool confirm = true;
-    CancellationTokenSource cts;
+    CancellationTokenSource? cts = null;
     bool nh = false;
 
     /// <summary>
@@ -157,6 +157,10 @@ else{
     /// <returns></returns>
     async Task DeleteNote(int id)
     {
+        if(cts != null)
+        {
+            cts.Cancel();
+        }
         visibility = "";
         warn = "danger";
         NoteService.Notes = NoteService.Notes.FindAll(n => n.Id != id);
@@ -189,6 +193,7 @@ else{
         await Search();
 
         StateHasChanged();
+        cts = null;
         confirm = true;
     }
 
