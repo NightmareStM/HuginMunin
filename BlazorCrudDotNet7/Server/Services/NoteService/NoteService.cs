@@ -54,6 +54,7 @@ namespace BlazorCrudDotNet7.Server.Services.NoteService
                 dbNote.Description = note.Description;
                 dbNote.Tag = note.Tag;
                 dbNote.Update = note.Update;
+                dbNote.Create = note.Create;
 
                 await _context.SaveChangesAsync();
             }

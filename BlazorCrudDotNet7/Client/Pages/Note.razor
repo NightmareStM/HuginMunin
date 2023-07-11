@@ -172,13 +172,16 @@ else
     /// <returns></returns>
     async Task Undo()
     {
-        var dbnote = await NoteService.GetNoteById((int)Id);
-        if (dbnote.Title != note.Title || dbnote.Description != note.Description || dbnote.Tag != note.Tag)
+        if (Id is not null)
         {
-            if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler annullare le modifiche di '{note.Title}'?"))
-                return;
+            var dbnote = await NoteService.GetNoteById((int)Id);
+            if (dbnote != null && (dbnote.Title != note.Title || dbnote.Description != note.Description || dbnote.Tag != note.Tag))
+            {
+                if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler annullare le modifiche di '{note.Title}'?"))
+                    return;
+            }
+            NavigationManager.NavigateTo($"/read/{note.Id}");
         }
-        NavigationManager.NavigateTo($"/read/{note.Id}");
     }
 
     /// <summary>
