@@ -1,7 +1,10 @@
 ﻿@page "/"
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Index</PageTitle>
-
+@*
 <div>
     <h2 @onclick=@(()=>hidden=!hidden)>
         Hugin & Munin <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +49,7 @@
 </div>
 @*<div id="text">
     <p class="fs-1 fst-italic text-muted text-center">Le note online che si adattano alle tue esigenze.</p>
-</div>*@
+</div>
 
 @code{
     bool hidden = true;
@@ -59,5 +62,62 @@
 else
 {
     <audio controls muted><source src="/Audio/internet.mp3" /></audio>
-}
+}*@
 @*<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+@*<button class="btn btn-secondary"
+@onclick="(() => Sort())">
+    Ordina
+</button>*@
+
+<section>
+    <h2>
+        Aggiungi una nuova nota
+    </h2> <form class="svelte-nvgjz6">
+        <label class="svelte-nvgjz6"><span>Titolo</span>
+            <input required="" type="text" placeholder="Titolo" class="svelte-nvgjz6">
+        </label>
+        <label class="svelte-nvgjz6">
+            <span>Tag</span>
+            <input required="" type="text" placeholder="Tag" class="svelte-nvgjz6">
+        </label>
+        <button aria-label="Create entry" aria-describedby="description" class="svelte-nvgjz6">
+            <span id="description" hidden="">Add the key value pair to the list of items</span>
+            <svg viewBox="0 0 100 100" width="40" height="40" class="svelte-nvgjz6"><use href="#create"></use></svg>
+        </button>
+
+        @*TODO: text input per la descrizione e pulsante per confermare la creazione*@
+
+    </form>
+</section>
+
+<section>
+    <h2>
+        Note Recenti
+    </h2>
+    <main class="svelte-foxn66">
+        @foreach (var note in NoteService.Notes)
+        {
+            <article class="svelte-foxn66" style="border-color: rebeccapurple;">
+                <h2 class="svelte-foxn66">@note.Title</h2>
+                <p class="svelte-foxn66">@note.Tag</p>
+                <button aria-label="Delete" class="svelte-foxn66">
+                    <i class="oi oi-trash" style="color: white;"></i>
+                </button>
+            </article>
+        }
+    </main>
+</section>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await NoteService.GetNotes();
+        Sort();
+    }
+
+    private void Sort()
+    {
+        NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty("Update").GetValue(x, null)).Take(5).ToList(); 
+    }
+}
