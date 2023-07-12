@@ -78,7 +78,7 @@ else
     <h2>
         Aggiungi una nuova nota
     </h2>
-    <form class="svelte-nvgjz6">
+    <div class="svelte-nvgjz6">
         <label class="svelte-nvgjz6">
             <span>
                 Titolo
@@ -89,18 +89,18 @@ else
             <span>
                 Tag
             </span>
-            <input type="text" placeholder="Tag" class="svelte-nvgjz6">
+            <input @bind="note.Tag" type="text" placeholder="Tag" class="svelte-nvgjz6">
         </label>
         <label class="svelte-nvgjz6">
             <span>
                 Descrizione
             </span>
-            <input type="text" placeholder="Descrione" class="svelte-nvgjz6">
+            <input @bind="note.Description" type="text" placeholder="Descrione" class="svelte-nvgjz6">
         </label>
         <button aria-label="Create entry" aria-describedby="description" class="svelte-nvgjz6" @onclick="(() => Create())">
             <i class="oi oi-check check"></i>
         </button>
-    </form>
+    </div>
 </section>
 
 <Popup @ref="popupRef" />
@@ -110,9 +110,16 @@ else
         Note Recenti
     </h2>
     <main class="svelte-foxn66">
+        <article @onclick="(() => NewNote())" class="svelte-foxn66" style="background-color: #262640; color: white; cursor: pointer">
+            <p class="svelte-foxn66">NEW!</p>
+            <button aria-label="Create"
+                    class="svelte-foxn66">
+                <i class="oi oi-plus" style="color: black;"></i>
+            </button>
+        </article>
         @foreach (var note in NoteService.Notes)
         {
-            <article class="svelte-foxn66" style="border-color: rebeccapurple;">
+            <article class="svelte-foxn66">
                 <h2 class="svelte-foxn66">@note.Title</h2>
                 <p class="svelte-foxn66">@note.Tag</p>
                 <button
@@ -139,7 +146,8 @@ else
 
     private void Sort()
     {
-        NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty("Update").GetValue(x, null)).Take(5).ToList(); 
+        NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty("Update").GetValue(x, null)).Take(5).ToList();
+        //NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty("Update").GetValue(x, null)).ToList().GetRange(1, 5); //range 1 - 6
     }
 
     /// <summary>
@@ -172,7 +180,13 @@ else
         {
             await NoteService.DeleteNote(id);
             await NoteService.GetNotes();
+            Sort();
         }
+    }
+
+    private void NewNote()
+    {
+        NavigationManager.NavigateTo($"/nota");
     }
 
     /// <summary>

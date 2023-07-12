@@ -121,6 +121,7 @@ else
             {
                 note.Create = note.Update;
                 await NoteService.CreateNote(note);
+                NavigationManager.NavigateTo($"/note");
             }
             else
             {
@@ -132,6 +133,7 @@ else
                 //        return;
                 //}
                 await NoteService.UpdateNote((int)Id, note);
+                NavigationManager.NavigateTo($"/read/{note.Id}");
             }
         }
     }
@@ -163,6 +165,7 @@ else
             new BlazorCrudDotNet7.Shared.Note { Title = note.Title, Description = note.Description, Tag = note.Tag, Update = DateTime.Now };
 
             await NoteService.CreateNote(_note);
+            NavigationManager.NavigateTo($"/note");
         }
     }
 

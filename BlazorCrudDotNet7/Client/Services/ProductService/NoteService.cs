@@ -27,7 +27,7 @@ namespace BlazorCrudDotNet7.Client.Services.NoteService
         {
             await _http.PostAsJsonAsync("api/note", note);
 
-            _navigationManger.NavigateTo($"note");
+            //_navigationManger.NavigateTo($"note");
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace BlazorCrudDotNet7.Client.Services.NoteService
         public async Task DeleteNote(int id)
         {
             var result = await _http.DeleteAsync($"api/note/{id}");
-            _navigationManger.NavigateTo("note");//notes
+            //_navigationManger.NavigateTo("note");//notes
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace BlazorCrudDotNet7.Client.Services.NoteService
         public async Task UpdateNote(int id, Note note)
         {
             await _http.PutAsJsonAsync($"api/note/{id}", note);
-            _navigationManger.NavigateTo($"/read/{id}");
+            //_navigationManger.NavigateTo($"/read/{id}");
         }
     }
 }
