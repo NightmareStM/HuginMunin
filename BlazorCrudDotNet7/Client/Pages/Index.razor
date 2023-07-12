@@ -70,6 +70,10 @@ else
     Ordina
 </button>*@
 
+<h1>
+    Hugin & Munin
+</h1>
+
 <section>
     <h2>
         Aggiungi una nuova nota
@@ -96,9 +100,6 @@ else
         <button aria-label="Create entry" aria-describedby="description" class="svelte-nvgjz6" @onclick="(() => Create())">
             <i class="oi oi-check check"></i>
         </button>
-        
-        @*TODO: text input per la descrizione e pulsante per confermare la creazione*@
-
     </form>
 </section>
 
@@ -114,7 +115,10 @@ else
             <article class="svelte-foxn66" style="border-color: rebeccapurple;">
                 <h2 class="svelte-foxn66">@note.Title</h2>
                 <p class="svelte-foxn66">@note.Tag</p>
-                <button aria-label="Delete" class="svelte-foxn66" @onclick="(() => DeleteNote(note.Id))">
+                <button
+                    aria-label="Delete"
+                    class="svelte-foxn66"
+                    @onclick="(() => DeleteNote(note.Id))">
                     <i class="oi oi-trash" style="color: white;"></i>
                 </button>
             </article>
