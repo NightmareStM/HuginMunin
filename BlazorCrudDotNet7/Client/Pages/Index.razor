@@ -73,23 +73,36 @@ else
 <section>
     <h2>
         Aggiungi una nuova nota
-    </h2> <form class="svelte-nvgjz6">
-        <label class="svelte-nvgjz6"><span>Titolo</span>
-            <input required="" type="text" placeholder="Titolo" class="svelte-nvgjz6">
+    </h2>
+    <form class="svelte-nvgjz6">
+        <label class="svelte-nvgjz6">
+            <span>
+                Titolo
+            </span>
+            <input @bind="note.Title" required="" type="text" placeholder="Titolo" class="svelte-nvgjz6">
         </label>
         <label class="svelte-nvgjz6">
-            <span>Tag</span>
-            <input required="" type="text" placeholder="Tag" class="svelte-nvgjz6">
+            <span>
+                Tag
+            </span>
+            <input type="text" placeholder="Tag" class="svelte-nvgjz6">
         </label>
-        <button aria-label="Create entry" aria-describedby="description" class="svelte-nvgjz6">
-            <span id="description" hidden="">Add the key value pair to the list of items</span>
-            <svg viewBox="0 0 100 100" width="40" height="40" class="svelte-nvgjz6"><use href="#create"></use></svg>
+        <label class="svelte-nvgjz6">
+            <span>
+                Descrizione
+            </span>
+            <input type="text" placeholder="Descrione" class="svelte-nvgjz6">
+        </label>
+        <button aria-label="Create entry" aria-describedby="description" class="svelte-nvgjz6" @onclick="(() => Create())">
+            <i class="oi oi-check check"></i>
         </button>
-
+        
         @*TODO: text input per la descrizione e pulsante per confermare la creazione*@
 
     </form>
 </section>
+
+<Popup @ref="popupRef" />
 
 <section>
     <h2>
@@ -101,7 +114,7 @@ else
             <article class="svelte-foxn66" style="border-color: rebeccapurple;">
                 <h2 class="svelte-foxn66">@note.Title</h2>
                 <p class="svelte-foxn66">@note.Tag</p>
-                <button aria-label="Delete" class="svelte-foxn66">
+                <button aria-label="Delete" class="svelte-foxn66" @onclick="(() => DeleteNote(note.Id))">
                     <i class="oi oi-trash" style="color: white;"></i>
                 </button>
             </article>
@@ -110,6 +123,10 @@ else
 </section>
 
 @code{
+    BlazorCrudDotNet7.Shared.Note note =
+        new BlazorCrudDotNet7.Shared.Note { Title = "Nuova Nota" };
+    private Popup popupRef = new();
+
     protected override async Task OnInitializedAsync()
     {
         await NoteService.GetNotes();
@@ -119,5 +136,66 @@ else
     private void Sort()
     {
         NoteService.Notes = NoteService.Notes.OrderByDescending(x => x.GetType().GetProperty("Update").GetValue(x, null)).Take(5).ToList(); 
+    }
+
+    /// <summary>
+    /// all'invio fa un controllo e crea una nuova nota se non esisteva o aggiorna se esisteva già
+    /// </summary>
+    /// <returns></returns>
+    async Task Create()
+    {
+        if (Check())
+        {
+            note.Update = DateTime.Now;
+            note.Create = note.Update;
+            await NoteService.CreateNote(note);
+            await NoteService.GetNotes();
+            Sort();
+
+            note = new BlazorCrudDotNet7.Shared.Note { Title = "Nuova Nota" };
+        }
+    }
+
+    /// <summary>
+    /// Elimina la nota elezionata
+    /// </summary>
+    /// <returns></returns>
+    async Task DeleteNote(int id)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Sei sicuro di voler eliminare la nota?"))
+            return;
+        else
+        {
+            await NoteService.DeleteNote(id);
+            await NoteService.GetNotes();
+        }
+    }
+
+    /// <summary>
+    /// Controllo di validità delle modifiche
+    /// </summary>
+    /// <returns>
+    /// ritorna true se i campi rispettano le condizioni, falso se non le rispettano (e mostra messaggio di errore)
+    /// </returns>
+    bool Check()
+    {
+        if (note.Title == "" || note.Title == " ")
+        {
+            popupRef.Show("Il titolo non può essere vuoto", "Attenzione!");
+        }
+        else if (note.Tag.Length > 25)
+        {
+            popupRef.Show("Il tag può contenere MASSIMO 25 caratteri", "Attenzione!");
+        }
+        else if (note.Title.Length > 50)
+        {
+            popupRef.Show("Il titolo è preferibile di 50 o meno caratteri", "Attenzione!");
+        }
+        else
+        {
+            return true;
+        }
+
+        return false;
     }
 }

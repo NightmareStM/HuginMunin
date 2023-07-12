@@ -44,11 +44,6 @@ audio {
     margin: 0;
 }
 
-body {
-    color: hsl(240, 25%, 95%);
-    background: hsl(240, 25%, 20%);
-    font-family: 'IBM Plex Mono', monospace;
-}
 /* absolute position the span in the top left corner of each heading */
 h2 {
     position: relative;
@@ -163,7 +158,8 @@ form.svelte-nvgjz6 label.svelte-nvgjz6 {
     display: flex;
     flex-direction: column;
     font-size: 1rem;
-    line-height: 2
+    line-height: 2;
+    flex-basis: 50%;
 }
 
 form.svelte-nvgjz6 label input.svelte-nvgjz6 {
@@ -184,11 +180,19 @@ form.svelte-nvgjz6 button.svelte-nvgjz6 {
     width: 2.75rem;
     height: 2.75rem;
     padding: 0.25rem;
-    margin: 0.25rem 0
+    margin: 0.25rem 0;
 }
 
 form.svelte-nvgjz6 button svg.svelte-nvgjz6 {
     display: block;
     width: 100%;
-    height: 100%
+    height: 100%;
+}
+
+.check {
+    font-size: 1.5em;
+    background: hsla(240, 25%, 50%, 0.1);
+    border: 5px solid currentColor;
+    border-radius: 25px;
+    position: relative;
 }
